@@ -6,6 +6,29 @@ namespace equality_examples
     {
         static void Main(string[] args)
         {
+            CalorieCount cal300 = new CalorieCount(300);
+            CalorieCount cal400 = new CalorieCount(400);
+
+            DisplayOrder(cal300, cal400);
+            DisplayOrder(cal400, cal300);
+            DisplayOrder(cal300, cal300);
+
+
+
+            // Food apple = new Food("apple", FoodGroup.Fruit);
+            // CookedFood stewedApple = new CookedFood("stewed", "apple", FoodGroup.Fruit);
+            // CookedFood bakedApple = new CookedFood("baked", "apple", FoodGroup.Fruit);
+            // CookedFood stewedApple2 = new CookedFood("stewed", "apple", FoodGroup.Fruit);
+            // Food apple2 = new Food("apple", FoodGroup.Fruit);
+
+            // DisplayWhetherEqual(apple, stewedApple);
+            // DisplayWhetherEqual(stewedApple, bakedApple);
+            // DisplayWhetherEqual(stewedApple, stewedApple2);
+            // DisplayWhetherEqual(apple, apple2);
+            // DisplayWhetherEqual(apple, apple);
+
+
+
             // FoodItem banana = new FoodItem("banana", FoodGroup.Fruit);
             // FoodItem banana2 = new FoodItem("banana", FoodGroup.Fruit);
             // FoodItem chocolate = new FoodItem("chocolate", FoodGroup.Sweets);
@@ -19,18 +42,21 @@ namespace equality_examples
             // Console.WriteLine(
             //     "chocolate  == banana:      " + (banana == chocolate)
             // );
+        }
 
-            Food apple = new Food("apple", FoodGroup.Fruit);
-            CookedFood stewedApple = new CookedFood("stewed", "apple", FoodGroup.Fruit);
-            CookedFood bakedApple = new CookedFood("baked", "apple", FoodGroup.Fruit);
-            CookedFood stewedApple2 = new CookedFood("stewed", "apple", FoodGroup.Fruit);
-            Food apple2 = new Food("apple", FoodGroup.Fruit);
+        static void DisplayOrder<T>(T x, T y) where T : IComparable<T>
+        {
+            //remember that you can't use operators on generics which is 
+            //why there is the restriction that the types being passed MUST 
+            //implement IComparable<T>
+            int result = x.CompareTo(y);
 
-            DisplayWhetherEqual(apple, stewedApple);
-            DisplayWhetherEqual(stewedApple, bakedApple);
-            DisplayWhetherEqual(stewedApple, stewedApple2);
-            DisplayWhetherEqual(apple, apple2);
-            DisplayWhetherEqual(apple, apple);
+            if(result == 0)
+                Console.WriteLine($"{x, 12} = {y}");
+            else if(result > 0)
+                Console.WriteLine($"{x, 12} > {y}");
+            else
+                Console.WriteLine($"{x, 12} < {y}");
         }
 
         static void DisplayWhetherEqual(Food food1, Food food2)
