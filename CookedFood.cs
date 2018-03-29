@@ -2,7 +2,7 @@ using System;
 
 namespace equality_examples
 {
-    public sealed class CookedFood : Food //sealed means nothing else can derive from this class
+    public sealed class CookedFood : Food, IEquatable<CookedFood> //sealed means nothing else can derive from this class
     {
         private string _cookingMethod;
 
@@ -26,6 +26,9 @@ namespace equality_examples
         }
 
         public override int GetHashCode() => base.GetHashCode() ^ _cookingMethod.GetHashCode();
+
+        public bool Equals(CookedFood other) => object.Equals(this, other);
+
         public static bool operator ==(CookedFood x, CookedFood y) => object.Equals(x, y); 
         public static bool operator !=(CookedFood x, CookedFood y) => !object.Equals(x, y);
     }

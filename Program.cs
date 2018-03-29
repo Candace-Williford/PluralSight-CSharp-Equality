@@ -48,47 +48,76 @@ namespace equality_examples
             // );
         // }
 
+        // static void Main(string[] args)
+        // {
+        //     Console.WriteLine($"Current culture is {Thread.CurrentThread.CurrentCulture}");
+
+        //     // string str1 = "apple";
+        //     // string str2 = "PINEAPPLE";
+        //     // string str1 = "Stra\u00dfe";
+        //     // string str2 = "Strasse";
+        //     string str1 = "erkl\u00e4ren";
+        //     string str2 = "erkla\u0308ren";
+        //     DisplayAllComparisons(str1, str2);
+
+        //     //ordinal has better performance and is culture independent
+        //     //but you usually want to use current culture for anything that has to do with end user data
+
+        //     string apple = "Apple";
+        //     string apple2 = "Ap" + "ple";
+        //     string pineapple = "Pineapple";
+
+        //     Console.WriteLine($"strings are {apple} and {apple2}");
+
+        //     //concatenation is done at run time instead of compile time.
+        //     //hardcoded strings might compile to a single instance
+        //     //saves memory and can make comparisons faster
+        //     //this optimization is known as string pooling
+        //     //you can use string.Inter() to force this optimization. not typically used
+        //     Console.WriteLine(apple == apple2); //true
+        //     Console.WriteLine(ReferenceEquals(apple, apple2)); //true
+
+        //     bool areEqual = string.Equals(
+        //         apple, pineapple, StringComparison.CurrentCultureIgnoreCase);
+            
+        //     //there is a static comparison override that allows you to specify the culture
+        //     int cmpResult = string.Compare(
+        //         apple, pineapple, CultureInfo.GetCultureInfo("fr-FR"),
+        //         CompareOptions.IgnoreSymbols);
+        //     areEqual = (cmpResult == 0);
+
+        //     // case-sensitive ordinal comparison
+        //     areEqual = (apple == pineapple);
+        //     areEqual = apple.Equals(pineapple);
+        // }
+
         static void Main(string[] args)
         {
-            Console.WriteLine($"Current culture is {Thread.CurrentThread.CurrentCulture}");
+            //string knows to sort alphabetically because it implements IComparable<string>
 
-            // string str1 = "apple";
-            // string str2 = "PINEAPPLE";
-            // string str1 = "Stra\u00dfe";
-            // string str2 = "Strasse";
-            string str1 = "erkl\u00e4ren";
-            string str2 = "erkla\u0308ren";
-            DisplayAllComparisons(str1, str2);
+            Food[] list = {
+                new Food("apple", FoodGroup.Fruit),
+                new Food("pear", FoodGroup.Fruit),
+                new CookedFood("baked", "apple", FoodGroup.Fruit)
+            };
+            SortAndShowList(list);
 
-            //ordinal has better performance and is culture independent
-            //but you usually want to use current culture for anything that has to do with end user data
+            Console.WriteLine();
 
-            string apple = "Apple";
-            string apple2 = "Ap" + "ple";
-            string pineapple = "Pineapple";
+            Food[] list2 = {
+                new CookedFood("baked", "apple", FoodGroup.Fruit),
+                new Food("pear", FoodGroup.Fruit),
+                new Food("apple", FoodGroup.Fruit)
+            };
+            SortAndShowList(list);
+        }
 
-            Console.WriteLine($"strings are {apple} and {apple2}");
+        static void SortAndShowList(Food[] list)
+        {
+            Array.Sort(list, FoodNameComparer.Instance);
 
-            //concatenation is done at run time instead of compile time.
-            //hardcoded strings might compile to a single instance
-            //saves memory and can make comparisons faster
-            //this optimization is known as string pooling
-            //you can use string.Inter() to force this optimization. not typically used
-            Console.WriteLine(apple == apple2); //true
-            Console.WriteLine(ReferenceEquals(apple, apple2)); //true
-
-            bool areEqual = string.Equals(
-                apple, pineapple, StringComparison.CurrentCultureIgnoreCase);
-            
-            //there is a static comparison override that allows you to specify the culture
-            int cmpResult = string.Compare(
-                apple, pineapple, CultureInfo.GetCultureInfo("fr-FR"),
-                CompareOptions.IgnoreSymbols);
-            areEqual = (cmpResult == 0);
-
-            // case-sensitive ordinal comparison
-            areEqual = (apple == pineapple);
-            areEqual = apple.Equals(pineapple);
+            foreach (var item in list)
+                Console.WriteLine(item);
         }
 
         static void DisplayWhetherEqual(Food food1, Food food2)

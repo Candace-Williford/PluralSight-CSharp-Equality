@@ -23,10 +23,7 @@ namespace equality_examples
             this._group = group;
         }
 
-        public override string ToString()
-        {
-            return _name;
-        }
+        public override string ToString() => $"{_name} ({_group})";
 
         public override bool Equals(object obj)
         {
