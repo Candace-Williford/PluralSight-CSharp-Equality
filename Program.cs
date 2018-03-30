@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 
@@ -91,25 +92,39 @@ namespace equality_examples
         //     areEqual = apple.Equals(pineapple);
         // }
 
+        // static void Main(string[] args)
+        // {
+        //     //string knows to sort alphabetically because it implements IComparable<string>
+
+        //     Food[] list = {
+        //         new Food("apple", FoodGroup.Fruit),
+        //         new Food("pear", FoodGroup.Fruit),
+        //         new CookedFood("baked", "apple", FoodGroup.Fruit)
+        //     };
+        //     SortAndShowList(list);
+
+        //     Console.WriteLine();
+
+        //     Food[] list2 = {
+        //         new CookedFood("baked", "apple", FoodGroup.Fruit),
+        //         new Food("pear", FoodGroup.Fruit),
+        //         new Food("apple", FoodGroup.Fruit)
+        //     };
+        //     SortAndShowList(list);
+        // }
+
         static void Main(string[] args)
         {
-            //string knows to sort alphabetically because it implements IComparable<string>
+            var foodItems = new HashSet<FoodItem>(FoodItemEqualityComparer.Instance); //hashset only lets you add unique items. it does this by using equality
+            foodItems.Add(new FoodItem("apple", FoodGroup.Fruit));
+            foodItems.Add(new FoodItem("pear", FoodGroup.Fruit));
+            foodItems.Add(new FoodItem("pineapple", FoodGroup.Fruit));
+            foodItems.Add(new FoodItem("apple", FoodGroup.Fruit));
 
-            Food[] list = {
-                new Food("apple", FoodGroup.Fruit),
-                new Food("pear", FoodGroup.Fruit),
-                new CookedFood("baked", "apple", FoodGroup.Fruit)
-            };
-            SortAndShowList(list);
+            foreach(var foodItem in foodItems)
+                Console.WriteLine(foodItem);
 
-            Console.WriteLine();
-
-            Food[] list2 = {
-                new CookedFood("baked", "apple", FoodGroup.Fruit),
-                new Food("pear", FoodGroup.Fruit),
-                new Food("apple", FoodGroup.Fruit)
-            };
-            SortAndShowList(list);
+            //HashTables are used to improve performance. They use GetHashCode. The most common HashTable is Dictionary<T key, T value>
         }
 
         static void SortAndShowList(Food[] list)
@@ -175,3 +190,8 @@ namespace equality_examples
         }
     }
 }
+
+
+//arrays evaluate reference equality. Use IStructuralEquatable 
+    //and pass an equality comparer when doing arr.Equals(arr2, comparer)
+    //there's also IStructuralComparable for ordering arrays, NOT items in the arrays, but the arrays themselves
